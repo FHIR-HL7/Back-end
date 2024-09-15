@@ -1,0 +1,1 @@
+export type encounterType = "ambulatory" | "emergency" | "field" | "home" | "virtual" | "unknown" | "other";

@@ -1,0 +1,1 @@
+export type OrganizationType = "Hospital" | "Pharmacy" | "Laboratory" | "Clinic" | "Insurance Company" | "Healthcare Provider" | "Government" | "School" | "Research Institute" | "Pharmaceutical Company" | "Medical Device Manufacturer" | "payer" | "Other";

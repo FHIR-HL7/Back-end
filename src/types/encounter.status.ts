@@ -1,0 +1,1 @@
+export type encounterStatus = "planned" | "arrived" | "triaged" | "in-progress" | "on-leave" | "finished" | "cancelled" | "unknown" | "other";
