@@ -1,4 +1,4 @@
-import { database } from "../../db/db";
+import { database } from "../db/db";
 import { ObjectId } from "mongodb";
 import { encounterStatus } from "../types/encounter.status";
 import { encounterType } from "../types/encounter.type";
@@ -19,12 +19,7 @@ export interface Encounter {
         end?: Date;
     };
     patientInstructions?: string;
-    payment: {
-        paymentId: ObjectId;
-        amount: number;
-        currency: string;
-        method: "cash" | "check" | "card" | "bank" | "other";
-    };
+    paymentId: ObjectId;
 }
 
 export const encounter = database.collection<Encounter>("encounters");

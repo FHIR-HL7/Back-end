@@ -1,4 +1,4 @@
-import { database } from "../../db/db";
+import { database } from "../db/db";
 import { ObjectId } from "mongodb";
 
 export interface Practitioner {
@@ -13,7 +13,7 @@ export interface Practitioner {
     image?: string;
     specialty: string;
     phoneNumbers: string[];
-    email:string;
+    email: string;
     birthDate: Date;
     nationalNumber: string;
     isActive: boolean;

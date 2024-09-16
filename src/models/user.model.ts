@@ -1,4 +1,4 @@
-import { database } from "../../db/db";
+import { database } from "../db/db";
 import { ObjectId } from "mongodb";
 
 export interface User {
@@ -10,4 +10,4 @@ export interface User {
     registrationDate: Date;
 }
 
-export const user = database.collection<User>("users");
+export const users = database.collection<User>("users");

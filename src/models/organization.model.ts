@@ -1,4 +1,4 @@
-import { database } from "../../db/db";
+import { database } from "../db/db";
 import { ObjectId } from "mongodb";
 import { OrganizationType } from "../types/organization.type";
 

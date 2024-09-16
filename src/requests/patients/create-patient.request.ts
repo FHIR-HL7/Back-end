@@ -1,10 +1,7 @@
 import { ObjectId } from "mongodb";
-import { database } from "../db/db";
-
-export interface Patient {
-    _id: ObjectId;
-    managingOrganizationId?: ObjectId;
-    generalPractitionerId?: ObjectId;
+export interface CreatePatientRequest {
+    // managingOrganizationId: ObjectId;
+    // generalPractitionerId: ObjectId;
     name: {
         first: string;
         second: string;
@@ -18,7 +15,6 @@ export interface Patient {
     isActive: boolean;
     birthDate: Date;
     maritalStatus: "Single" | "Married" | "Divorced" | "Widowed";
-    image?: string;
     address: {
         country: string;
         city: string;
@@ -37,4 +33,3 @@ export interface Patient {
         phone: string;
     };
 }
-export const patients = database.collection<Patient>("patients");
