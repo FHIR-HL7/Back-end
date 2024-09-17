@@ -15,4 +15,4 @@ export interface DiagnosticReport {
     conclusion?: string;
 }
 
-export const diagnosticReport = database.collection<DiagnosticReport>("diagnosticReports");
+export const diagnosticReports = database.collection<DiagnosticReport>("diagnosticReports");

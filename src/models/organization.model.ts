@@ -16,4 +16,4 @@ export interface Organization {
     email: string;
 }
 
-export const organization = database.collection<Organization>("organizations");
+export const organizations = database.collection<Organization>("organizations");

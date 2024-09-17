@@ -4,10 +4,10 @@ import { ObjectId } from "mongodb";
 export interface Payment {
     _id: ObjectId;
     encounterId: ObjectId;
-    amount: number;
-    currency: string;
+    total: number;
     method: "cash" | "check" | "card" | "bank" | "other";
     paymentDate: Date;
+    tax: number;
 }
 
-export const payment = database.collection<Payment>("payments");
+export const payments = database.collection<Payment>("payments");

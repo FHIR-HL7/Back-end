@@ -2,6 +2,7 @@ import express, { json, NextFunction, Request, Response } from "express";
 import { userRouter } from "./src/routers/user.router";
 import path from "path";
 import { patientsRouter } from "./src/routers/patients.router";
+import { practitionersRouter } from "./src/routers/practitioners.router";
 // import cors from "cors";
 
 const app = express();
@@ -26,6 +27,8 @@ app.use(json()); // for parsing application/json else req.body will be {} not un
 app.use("/api/users", userRouter);
 
 app.use("/api/patients", patientsRouter);
+
+app.use("/api/practitioners", practitionersRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

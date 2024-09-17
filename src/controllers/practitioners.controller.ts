@@ -1,17 +1,17 @@
 import { RequestHandler, Request, Response } from "express";
-import { CreatePatientRequest, CreatePatientResponse } from "../requests/patients/create-patient.request";
+import { CreatePractitionerRequest, CreatePractitionerResponse } from "../requests/practitioners/create-practitioner.request";
 import { ObjectId } from "mongodb";
 import { ImageHelper } from "../helpers/image.helper";
 import { db } from "../models";
-import { Patient } from "../models/patient.model";
+import { Practitioner } from "../models/practitioner.model";
 import { JwtHelper } from "../helpers/JwtHelper";
-import { createPatientSchema, updatePatientSchema } from "../validationSchemas";
+import { createPractitionerSchema, updatePractitionerSchema } from "../validationSchemas";
 
 const create: RequestHandler = async (
-  req: Request<{}, CreatePatientResponse, CreatePatientRequest>,
+  req: Request<{}, CreatePractitionerResponse, CreatePractitionerRequest>,
   res: Response
 ) => {
-  const { error } = createPatientSchema.validate(req.body);
+  const { error } = createPractitionerSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -21,35 +21,31 @@ const create: RequestHandler = async (
     return res.status(403).json({ message: "Invalid token" });
   }
 
-  const newPatient: Patient = {
+  const newPractitioner: Practitioner = {
     _id: new ObjectId(),
     name: req.body.name,
     email: req.body.email,
     gender: req.body.gender,
     nationalNumber: req.body.nationalNumber,
-    deceasedDate: req.body.deceasedDate || undefined,
+    specialty: req.body.specialty,
     phoneNumbers: req.body.phoneNumbers,
     isActive: req.body.isActive,
     birthDate: req.body.birthDate,
-    maritalStatus: req.body.maritalStatus,
+    role: req.body.role,
     address: req.body.address,
-    chronicDiseases: req.body.chronicDiseases || undefined,
-    insurance: req.body.insurance || undefined,
-    bloodType: req.body.bloodType,
-    weight: req.body.weight,
-    height: req.body.height,
-    emergencyContact: req.body.emergencyContact,
+    practiceLicense: req.body.practiceLicense,
+    qualifications: req.body.qualifications,
   };
 
   if (req.file) {
-    const fileName = `${newPatient._id}-${req.file.originalname}`;
+    const fileName = `${newPractitioner._id}-${req.file.originalname}`;
     await ImageHelper.saveImageAsync(fileName, req.file.buffer);
-    newPatient.image = fileName;
+    newPractitioner.image = fileName;
   } else {
-    newPatient.image = "default-image.jpg";
+    newPractitioner.image = "default-image.jpg";
   }
-  await db.patients.insertOne(newPatient);
-  return res.status(201).json(newPatient);
+  await db.practitioners.insertOne(newPractitioner);
+  return res.status(201).json(newPractitioner);
 };
 
 const deleteById: RequestHandler = async (req: Request, res: Response) => {
@@ -59,15 +55,15 @@ const deleteById: RequestHandler = async (req: Request, res: Response) => {
   }
   const id = req.params.id;
 
-  const patient = await db.patients.findOne({ _id: new ObjectId(id) });
-  if (patient) {
-    await db.patients.deleteOne({ _id: new ObjectId(id) });
-    if (patient.image && patient.image !== "default-image.jpg") {
-      await ImageHelper.deleteImage(patient.image);
+  const practitioner = await db.practitioners.findOne({ _id: new ObjectId(id) });
+  if (practitioner) {
+    await db.practitioners.deleteOne({ _id: new ObjectId(id) });
+    if (practitioner.image && practitioner.image !== "default-image.jpg") {
+      await ImageHelper.deleteImage(practitioner.image);
     }
-    return res.status(200).json({ message: "Patient deleted successfully" });
+    return res.status(200).json({ message: "practitioner deleted successfully" });
   }
-  return res.status(404).json({ message: "Patient not found" });
+  return res.status(404).json({ message: "practitioner not found" });
 };
 
 const getAll: RequestHandler = async (req: Request, res: Response) => {
@@ -76,8 +72,8 @@ const getAll: RequestHandler = async (req: Request, res: Response) => {
     return res.status(403).json({ message: "Invalid token" });
   }
 
-  const patients = await db.patients.find().toArray();
-  return res.status(200).json(patients);
+  const practitioners = await db.practitioners.find().toArray();
+  return res.status(200).json(practitioners);
 };
 
 const getById: RequestHandler = async (req: Request, res: Response) => {
@@ -87,15 +83,15 @@ const getById: RequestHandler = async (req: Request, res: Response) => {
   }
 
   const id = req.params.id;
-  const patient = await db.patients.findOne({ _id: new ObjectId(id) });
-  if (patient) {
-    return res.status(200).json(patient);
+  const practitioner = await db.practitioners.findOne({ _id: new ObjectId(id) });
+  if (practitioner) {
+    return res.status(200).json(practitioner);
   }
-  return res.status(404).json({ message: "Patient not found" });
+  return res.status(404).json({ message: "practitioner not found" });
 };
 
 const updateById: RequestHandler = async (req: Request, res: Response) => {
-  const { error } = updatePatientSchema.validate(req.body);
+  const { error } = updatePractitionerSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -105,12 +101,12 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
   }
 
   const id = req.params.id;
-  const patient = await db.patients.findOne({ _id: new ObjectId(id) });
-  if (!patient) {
-    return res.status(404).json({ message: "Patient not found" });
+  const practitioner = await db.practitioners.findOne({ _id: new ObjectId(id) });
+  if (!practitioner) {
+    return res.status(404).json({ message: "Practitioner not found" });
   }
 
-  const updateData: Partial<Patient> = {};
+  const updateData: Partial<Practitioner> = {};
   if (req.body.name) {
     updateData.name = req.body.name;
   }
@@ -123,8 +119,8 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
   if (req.body.nationalNumber) {
     updateData.nationalNumber = req.body.nationalNumber;
   }
-  if (req.body.deceasedDate) {
-    updateData.deceasedDate = req.body.deceasedDate;
+  if (req.body.specialty) {
+    updateData.specialty = req.body.specialty;
   }
   if (req.body.phoneNumbers) {
     updateData.phoneNumbers = req.body.phoneNumbers;
@@ -135,34 +131,22 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
   if (req.body.birthDate) {
     updateData.birthDate = req.body.birthDate;
   }
-  if (req.body.maritalStatus) {
-    updateData.maritalStatus = req.body.maritalStatus;
+  if (req.body.role) {
+    updateData.role = req.body.role;
   }
   if (req.body.address) {
     updateData.address = req.body.address;
   }
-  if (req.body.chronicDiseases) {
-    updateData.chronicDiseases = req.body.chronicDiseases;
+  if (req.body.practiceLicense) {
+    updateData.practiceLicense = req.body.practiceLicense;
   }
-  if (req.body.insurance) {
-    updateData.insurance = req.body.insurance;
-  }
-  if (req.body.bloodType) {
-    updateData.bloodType = req.body.bloodType;
-  }
-  if (req.body.weight) {
-    updateData.weight = req.body.weight;
-  }
-  if (req.body.height) {
-    updateData.height = req.body.height;
-  }
-  if (req.body.emergencyContact) {
-    updateData.emergencyContact = req.body.emergencyContact;
+  if (req.body.qualifications) {
+    updateData.qualifications = req.body.qualifications;
   }
 
   if (req.file) {
-    if (patient.image && patient.image !== "default-image.jpg") {
-      await ImageHelper.deleteImage(patient.image);
+    if (practitioner.image && practitioner.image !== "default-image.jpg") {
+      await ImageHelper.deleteImage(practitioner.image);
     }
 
     const fileName = `${id}-${req.file.originalname}`;
@@ -174,20 +158,20 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Nothing to update" });
   }
 
-  const result = await db.patients.updateOne(
+  const result = await db.practitioners.updateOne(
     { _id: new ObjectId(id) },
     { $set: updateData }
   );
 
   if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "Patient not found" });
+    return res.status(404).json({ message: "Practitioner not found" });
   }
 
-  const updatedPatient = await db.patients.findOne({ _id: new ObjectId(id) });
-  return res.status(200).json(updatedPatient);
+  const updatedPractitioner = await db.practitioners.findOne({ _id: new ObjectId(id) });
+  return res.status(200).json(updatedPractitioner);
 };
 
-export const patientsController = {
+export const practitionersController = {
   create,
   deleteById,
   getAll,

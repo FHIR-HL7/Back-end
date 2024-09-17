@@ -10,4 +10,4 @@ export interface Attachment {
     comments?: string;
 }
 
-export const attachment = database.collection<Attachment>("attachments");
+export const attachments = database.collection<Attachment>("attachments");

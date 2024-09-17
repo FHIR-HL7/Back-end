@@ -8,7 +8,6 @@ export interface Encounter {
     patientId: ObjectId;
     practitionerId: ObjectId;
     organizationId: ObjectId;
-    practitionerRole: string;
     status: encounterStatus;
     diagnosticReportIds: ObjectId[];
     type: encounterType;
@@ -22,4 +21,4 @@ export interface Encounter {
     paymentId: ObjectId;
 }
 
-export const encounter = database.collection<Encounter>("encounters");
+export const encounters = database.collection<Encounter>("encounters");

@@ -13,4 +13,4 @@ export interface MedicationPrescription {
     frequency: string;
 }
 
-export const medicationPrescription = database.collection<MedicationPrescription>("medicationPrescriptions");
+export const medicationPrescriptions = database.collection<MedicationPrescription>("medicationPrescriptions");

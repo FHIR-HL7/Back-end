@@ -14,7 +14,7 @@ export interface Questionnaire {
     purpose?: string;
     code: string;
     createdAt: Date;
-    version: number;
+    version?: number;
     url?: string;
     status: "draft" | "active" | "retired" | "unknown";
     effectivePeriod: {
@@ -25,4 +25,4 @@ export interface Questionnaire {
     lastModified?: Date;
 }
 
-export const questionnaire = database.collection<Questionnaire>("questionnaires");
+export const questionnaires = database.collection<Questionnaire>("questionnaires");

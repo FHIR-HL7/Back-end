@@ -6,7 +6,6 @@ export interface LabTest {
     patientId: ObjectId;
     practitionerId: ObjectId;
     organizationId: ObjectId;
-    practitionerRole: string;
     status: "requested" | "completed" | "in-progress" | "cancelled";
     testType: string;
     priority: "routine" | "urgent" | "asap" | "stat";
@@ -19,4 +18,4 @@ export interface LabTest {
     price: number;
 }
 
-export const labTest = database.collection<LabTest>("labTests");
+export const labTests = database.collection<LabTest>("labTests");

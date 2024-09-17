@@ -15,7 +15,7 @@ import { JwtHelper } from "../helpers/JwtHelper";
 import { registerSchema, loginSchema, updateProfileSchema } from "../validationSchemas";
 
 const register: RequestHandler = async (
-    req: Request<{}, RegisterResponse, RegisterRequest>,
+    req: Request<{}, RegisterResponse, RegisterRequest> & { file?: Express.Multer.File },
     res: Response
 ) => {
     const { error } = registerSchema.validate(req.body);
@@ -37,14 +37,13 @@ const register: RequestHandler = async (
         fullName: req.body.fullName,
         password: hashedPassword,
         registrationDate: new Date(),
+        image: "default-image.jpg",
     };
 
     if (req.file) {
         const fileName = `${newUser._id}-${req.file.originalname}`;
         await ImageHelper.saveImageAsync(fileName, req.file.buffer);
         newUser.image = fileName;
-    } else {
-        newUser.image = "default-image.jpg";
     }
 
     await db.users.insertOne(newUser);

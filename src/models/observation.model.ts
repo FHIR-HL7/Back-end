@@ -10,4 +10,4 @@ export interface Observation {
     unit: string;
 }
 
-export const observation = database.collection<Observation>("observations");
+export const observations = database.collection<Observation>("observations");

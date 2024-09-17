@@ -33,3 +33,7 @@ export interface CreatePatientRequest {
         phone: string;
     };
 }
+
+export interface CreatePatientResponse {
+    _id: ObjectId;
+  }

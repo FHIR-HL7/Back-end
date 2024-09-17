@@ -15,4 +15,4 @@ export interface Medication {
     expirationDate: Date;
 }
 
-export const medication = database.collection<Medication>("medications");
+export const medications = database.collection<Medication>("medications");

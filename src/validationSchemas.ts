@@ -87,3 +87,51 @@ export const updatePatientSchema = Joi.object({
     }).optional(),
     image: Joi.any().optional()
 });
+
+export const createPractitionerSchema = Joi.object({
+    name: Joi.object({
+        first: Joi.string().required(),
+        second: Joi.string().optional(),
+        last: Joi.string().required()
+    }).required(),
+    gender: Joi.string().valid("Male", "Female").required(),
+    image: Joi.string().optional(),
+    specialty: Joi.string().required(),
+    role: Joi.string().required(),
+    phoneNumbers: Joi.array().items(Joi.string().required()).required(),
+    email: Joi.string().email().required(),
+    birthDate: Joi.date().required(),
+    nationalNumber: Joi.string().required(),
+    isActive: Joi.boolean().required(),
+    address: Joi.object({
+        country: Joi.string().required(),
+        city: Joi.string().required(),
+        street: Joi.string().optional()
+    }).required(),
+    practiceLicense: Joi.string().required(),
+    qualifications: Joi.array().items(Joi.string().required()).required()
+});
+
+export const updatePractitionerSchema = Joi.object({
+    name: Joi.object({
+        first: Joi.string().optional(),
+        second: Joi.string().optional(),
+        last: Joi.string().optional()
+    }).optional(),
+    gender: Joi.string().valid("Male", "Female").optional(),
+    image: Joi.string().optional(),
+    specialty: Joi.string().optional(),
+    role: Joi.string().optional(),
+    phoneNumbers: Joi.array().items(Joi.string().optional()).optional(),
+    email: Joi.string().email().optional(),
+    birthDate: Joi.date().optional(),
+    nationalNumber: Joi.string().optional(),
+    isActive: Joi.boolean().optional(),
+    address: Joi.object({
+        country: Joi.string().optional(),
+        city: Joi.string().optional(),
+        street: Joi.string().optional()
+    }).optional(),
+    practiceLicense: Joi.string().optional(),
+    qualifications: Joi.array().items(Joi.string().optional()).optional()
+});

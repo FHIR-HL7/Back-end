@@ -1,9 +1,7 @@
-import { database } from "../db/db";
 import { ObjectId } from "mongodb";
 
-export interface Practitioner {
-    _id: ObjectId;
-    managingOrganizationIds?: ObjectId[];
+export interface CreatePractitionerRequest {
+    // managingOrganizationIds?: ObjectId[];
     name: {
         first: string;
         second: string;
@@ -26,5 +24,6 @@ export interface Practitioner {
     practiceLicense: string;
     qualifications: string[];
 }
-
-export const practitioners = database.collection<Practitioner>("practitioners");
+export interface CreatePractitionerResponse {
+    _id: ObjectId;
+}
