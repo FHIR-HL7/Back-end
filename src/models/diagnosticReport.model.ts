@@ -6,6 +6,7 @@ export interface DiagnosticReport {
     patientId: ObjectId;
     practitionerId: ObjectId;
     organizationId: ObjectId;
+    encounterId: ObjectId;
     labTestIds: ObjectId[];
     name: string;
     issuedDate: Date;

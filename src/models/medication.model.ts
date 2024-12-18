@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export interface Medication {
     _id: ObjectId;
-    suppliedOrganizationIds: ObjectId[];
+    suppliedOrganizationIds?: ObjectId[];
     name: string;
     description?: string;
     code: string;

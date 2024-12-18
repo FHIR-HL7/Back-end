@@ -32,6 +32,9 @@ export interface CreatePatientRequest {
         name: string;
         phone: string;
     };
+    heartRate: number;
+    bodyTemperature: number;
+    Glucose: number;
 }
 
 export interface CreatePatientResponse {

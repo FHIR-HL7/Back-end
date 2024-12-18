@@ -106,42 +106,27 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Practitioner not found" });
   }
 
-  const updateData: Partial<Practitioner> = {};
-  if (req.body.name) {
-    updateData.name = req.body.name;
-  }
-  if (req.body.email) {
-    updateData.email = req.body.email;
-  }
-  if (req.body.gender) {
-    updateData.gender = req.body.gender;
-  }
-  if (req.body.nationalNumber) {
-    updateData.nationalNumber = req.body.nationalNumber;
-  }
-  if (req.body.specialty) {
-    updateData.specialty = req.body.specialty;
-  }
-  if (req.body.phoneNumbers) {
-    updateData.phoneNumbers = req.body.phoneNumbers;
-  }
-  if (req.body.isActive) {
-    updateData.isActive = req.body.isActive;
-  }
-  if (req.body.birthDate) {
-    updateData.birthDate = req.body.birthDate;
-  }
-  if (req.body.role) {
-    updateData.role = req.body.role;
-  }
-  if (req.body.address) {
-    updateData.address = req.body.address;
-  }
-  if (req.body.practiceLicense) {
-    updateData.practiceLicense = req.body.practiceLicense;
-  }
-  if (req.body.qualifications) {
-    updateData.qualifications = req.body.qualifications;
+  const updateData: { [key: string]: any } = {};
+
+  const updateNestedFields = (prefix: string, obj: any) => {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const fieldKey = `${prefix}.${key}`;
+        updateData[fieldKey] = obj[key];
+      }
+    }
+  };
+
+  for (const key in req.body) {
+    if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+      if (typeof req.body[key] === 'object' && !Array.isArray(req.body[key])) {
+        updateNestedFields(key, req.body[key]);
+      } else if (Array.isArray(req.body[key])) {
+        updateData[key] = req.body[key];
+      } else {
+        updateData[key] = req.body[key];
+      }
+    }
   }
 
   if (req.file) {

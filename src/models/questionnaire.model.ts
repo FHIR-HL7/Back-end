@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export interface Questionnaire {
     _id: ObjectId;
-    contributedPatientIds: ObjectId[];
+    contributedPatientIds?: ObjectId[];
     name: string;
     description?: string;
     questions: {

@@ -39,6 +39,9 @@ const create: RequestHandler = async (
     weight: req.body.weight,
     height: req.body.height,
     emergencyContact: req.body.emergencyContact,
+    heartRate: req.body.heartRate,
+    bodyTemperature: req.body.bodyTemperature,
+    Glucose: req.body.Glucose,
   };
 
   if (req.file) {
@@ -110,54 +113,37 @@ const updateById: RequestHandler = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Patient not found" });
   }
 
-  const updateData: Partial<Patient> = {};
-  if (req.body.name) {
-    updateData.name = req.body.name;
-  }
-  if (req.body.email) {
-    updateData.email = req.body.email;
-  }
-  if (req.body.gender) {
-    updateData.gender = req.body.gender;
-  }
-  if (req.body.nationalNumber) {
-    updateData.nationalNumber = req.body.nationalNumber;
-  }
-  if (req.body.deceasedDate) {
-    updateData.deceasedDate = req.body.deceasedDate;
-  }
-  if (req.body.phoneNumbers) {
-    updateData.phoneNumbers = req.body.phoneNumbers;
-  }
-  if (req.body.isActive) {
-    updateData.isActive = req.body.isActive;
-  }
-  if (req.body.birthDate) {
-    updateData.birthDate = req.body.birthDate;
-  }
-  if (req.body.maritalStatus) {
-    updateData.maritalStatus = req.body.maritalStatus;
-  }
-  if (req.body.address) {
-    updateData.address = req.body.address;
-  }
-  if (req.body.chronicDiseases) {
-    updateData.chronicDiseases = req.body.chronicDiseases;
-  }
-  if (req.body.insurance) {
-    updateData.insurance = req.body.insurance;
-  }
-  if (req.body.bloodType) {
-    updateData.bloodType = req.body.bloodType;
-  }
-  if (req.body.weight) {
-    updateData.weight = req.body.weight;
-  }
-  if (req.body.height) {
-    updateData.height = req.body.height;
-  }
-  if (req.body.emergencyContact) {
-    updateData.emergencyContact = req.body.emergencyContact;
+  const updateData: { [key: string]: any } = {};
+
+  const updateNestedFields = (prefix: string, obj: any) => {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const fieldKey = `${prefix}.${key}`;
+        updateData[fieldKey] = obj[key];
+      }
+    }
+  };
+
+  for (const key in req.body) {
+    if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+      if (typeof req.body[key] === 'object' && !Array.isArray(req.body[key])) {
+        updateNestedFields(key, req.body[key]);
+      } else if (Array.isArray(req.body[key])) {
+        if ((patient as any)[key] && Array.isArray((patient as any)[key])) {
+          const arrayLength = (patient as any)[key].length;
+          req.body[key].forEach((item: any, index: number) => {
+            if (index >= arrayLength) {
+              return res.status(400).json({ message: `"${key}[${index}]" must not be a sparse array item` });
+            }
+          });
+          updateData[key] = req.body[key];
+        } else {
+          updateData[key] = req.body[key];
+        }
+      } else {
+        updateData[key] = req.body[key];
+      }
+    }
   }
 
   if (req.file) {

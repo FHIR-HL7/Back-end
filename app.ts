@@ -3,6 +3,16 @@ import { userRouter } from "./src/routers/user.router";
 import path from "path";
 import { patientsRouter } from "./src/routers/patients.router";
 import { practitionersRouter } from "./src/routers/practitioners.router";
+import { medicationsRouter } from "./src/routers/medications.router";
+import { organizationsRouter } from "./src/routers/organization.router";
+import { questionnairesRouter } from "./src/routers/questionnaires.router";
+import { encountersRouter } from "./src/routers/encounters.router";
+import { paymentsRouter } from "./src/routers/payments.router";
+import { labTestsRouter } from "./src/routers/labTests.router";
+import { medicationPrescriptionsRouter } from "./src/routers/medicationPrescriptions.router";
+import { observationsRouter } from "./src/routers/observations.router";
+import { diagnosticReportsRouter } from "./src/routers/diagnosticReports.router";
+import { attachmentsRouter } from "./src/routers/attachments.router";
 // import cors from "cors";
 
 const app = express();
@@ -29,6 +39,26 @@ app.use("/api/users", userRouter);
 app.use("/api/patients", patientsRouter);
 
 app.use("/api/practitioners", practitionersRouter);
+
+app.use("/api/medications", medicationsRouter);
+
+app.use("/api/organizations", organizationsRouter);
+
+app.use("/api/questionnaires", questionnairesRouter);
+
+app.use("/api/encounters", encountersRouter);
+
+app.use("/api/payments", paymentsRouter);
+
+app.use("/api/labTests", labTestsRouter);
+
+app.use("/api/medicationPrescriptions", medicationPrescriptionsRouter);
+
+app.use("/api/observations", observationsRouter);
+
+app.use("/api/diagnosticReports", diagnosticReportsRouter);
+
+app.use("/api/attachments", attachmentsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

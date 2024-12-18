@@ -9,7 +9,6 @@ export interface Encounter {
     practitionerId: ObjectId;
     organizationId: ObjectId;
     status: encounterStatus;
-    diagnosticReportIds: ObjectId[];
     type: encounterType;
     priority: "routine" | "urgent" | "asap" | "stat";
     reason?: string;
@@ -18,7 +17,6 @@ export interface Encounter {
         end?: Date;
     };
     patientInstructions?: string;
-    paymentId: ObjectId;
 }
 
 export const encounters = database.collection<Encounter>("encounters");

@@ -36,5 +36,8 @@ export interface Patient {
         name: string;
         phone: string;
     };
+    heartRate: number;
+    bodyTemperature: number;
+    Glucose: number;
 }
 export const patients = database.collection<Patient>("patients");
