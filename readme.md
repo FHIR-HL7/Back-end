@@ -197,8 +197,6 @@ Contributions are welcome! Please follow these steps to contribute:
 
 This project is licensed under the MIT License.
 
----
-
 ## My Impact
 
 In this project, I have contributed significantly to the development of the backend API. My contributions include:
